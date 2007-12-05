@@ -17,6 +17,7 @@ Source3:	prelink.cron
 Source4:	prelink.sysconfig
 Patch0:		prelink-0.3.10-init.patch
 Patch1:		cron-use-ionice.diff
+Patch2:		conf-skip-debug-files.patch
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	elfutils-static-devel glibc-static-devel
@@ -34,6 +35,7 @@ and thus programs come up faster.
 %patch0 -p1 -b .init
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
+%patch2 -p0 -b .skip_debug
 
 %build
 %configure --disable-shared
