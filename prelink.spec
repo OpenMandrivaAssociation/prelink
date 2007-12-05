@@ -1,7 +1,7 @@
 %define	name	prelink
-%define	version	0.3.10
-%define	date	20061201
-%define rel 2
+%define	version	0.4.0
+%define	date	20071009
+%define rel 1
 %define	release	%mkrel 1.%{date}.%{rel}
 
 Summary:	An ELF prelinking utility
