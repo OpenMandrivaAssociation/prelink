@@ -20,7 +20,7 @@ Patch1:		cron-use-ionice.diff
 Patch2:		conf-skip-debug-files.patch
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	elfutils-static-devel glibc-static-devel
+BuildRequires:	elfutils-static-devel glibc-static-devel perl
 Requires:	kernel >= 2.4.10 coreutils findutils
 Requires:	util-linux gawk grep
 Requires(post):	rpm-helper
@@ -36,6 +36,7 @@ and thus programs come up faster.
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
 %patch2 -p0 -b .skip_debug
+perl -MConfig -e 'print "-l $Config{archlib}\n"' >> prelink.conf
 
 %build
 %configure --disable-shared
