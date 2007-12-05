@@ -25,7 +25,7 @@ Requires(post):	rpm-helper
 
 %description
 The prelink package contains a utility which modifies ELF shared libraries
-and executables, so that far less relocations need to be resolved at runtime
+and executables, so that far fewer relocations need to be resolved at runtime
 and thus programs come up faster.
 
 %prep
