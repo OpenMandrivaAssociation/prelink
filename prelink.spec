@@ -31,6 +31,7 @@ and thus programs come up faster.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .init
+cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 
 %build
 %configure --disable-shared
@@ -46,12 +47,12 @@ echo ====================TESTING END=====================
 rm -rf $RPM_BUILD_ROOT
 %{makeinstall}
 mkdir -p %{buildroot}%{_sys_macros_dir}
-cp -a %{SOURCE2} %{buildroot}%{_sysconfdir}
+cp -a prelink.conf %{buildroot}%{_sysconfdir}
 
 mkdir -p %{buildroot}%{_sysconfdir}/{sysconfig,cron.daily,logrotate.d}
 
-cp -a %{SOURCE3} %{buildroot}%{_sysconfdir}/cron.daily/prelink
-cp -a %{SOURCE4}  %{buildroot}%{_sysconfdir}/sysconfig/prelink
+cp -a prelink.cron %{buildroot}%{_sysconfdir}/cron.daily/prelink
+cp -a prelink.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/prelink
 chmod 755 %{buildroot}%{_sysconfdir}/cron.daily/prelink
 chmod 644 %{buildroot}%{_sysconfdir}/{sysconfig/prelink,prelink.conf}
 cat > %{buildroot}%{_sys_macros_dir}/%name.macros <<"EOF"
