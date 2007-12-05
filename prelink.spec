@@ -44,8 +44,8 @@ perl -MConfig -e 'print "-l $Config{archlib}\n"' >> prelink.conf
 
 %check
 echo ====================TESTING=========================
-#%make -C testsuite check-harder
-#%make -C testsuite check-cycle
+%make -C testsuite check-harder
+%make -C testsuite check-cycle
 echo ====================TESTING END=====================
 
 %install
