@@ -16,6 +16,7 @@ Source2:	prelink.conf
 Source3:	prelink.cron
 Source4:	prelink.sysconfig
 Patch0:		prelink-0.3.10-init.patch
+Patch1:		cron-use-ionice.diff
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	elfutils-static-devel glibc-static-devel
@@ -32,6 +33,7 @@ and thus programs come up faster.
 %setup -q -n %{name}
 %patch0 -p1 -b .init
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
+%patch1 -p0 -b .ionice
 
 %build
 %configure --disable-shared
