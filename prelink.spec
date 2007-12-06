@@ -70,10 +70,10 @@ EOF
 
 chmod 644 %{buildroot}%{_sys_macros_dir}/%name.macros
 
-mkdir -p %{buildroot}{%{_localstatedir}/misc,%{_var}/log}
+mkdir -p %{buildroot}{%{_localstatedir}/misc,%{_var}/log/prelink}
 touch %{buildroot}%{_localstatedir}/misc/prelink.full
 touch %{buildroot}%{_localstatedir}/misc/prelink.force
-touch %{buildroot}%{_var}/log/prelink.log
+touch %{buildroot}/%{_var}/log/prelink/prelink.log
 
 cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
 /var/log/prelink.log {
@@ -102,9 +102,10 @@ rm -rf %{buildroot}
 %{_bindir}/execstack
 %{_mandir}/man8/prelink.8*
 %{_mandir}/man8/execstack.8*
+%dir %{_var}/log/prelink
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/misc/prelink.full
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/misc/prelink.force
-%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink.log
+%attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink/prelink.log
 
 
 
