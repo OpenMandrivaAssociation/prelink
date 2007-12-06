@@ -36,7 +36,7 @@ and thus programs come up faster.
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
 %patch2 -p0 -b .skip_debug
-perl -MConfig -e 'print "-l $Config{archlib}\n"' >> prelink.conf
+perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
 
 %build
 %configure --disable-shared
