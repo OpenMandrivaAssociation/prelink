@@ -1,7 +1,7 @@
 %define	name	prelink
 %define	version	0.4.0
 %define	date	20071009
-%define rel 2
+%define rel 3
 %define	release	%mkrel 1.%{date}.%{rel}
 
 Summary:	An ELF prelinking utility
@@ -21,7 +21,7 @@ Patch2:		conf-skip-debug-files.patch
 
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	elfutils-static-devel glibc-static-devel perl
-Requires:	kernel >= 2.4.10 coreutils findutils
+Requires:	coreutils findutils
 Requires:	util-linux gawk grep
 Requires(post):	rpm-helper
 
