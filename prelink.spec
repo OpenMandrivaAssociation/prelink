@@ -70,9 +70,9 @@ EOF
 
 chmod 644 %{buildroot}%{_sys_macros_dir}/%name.macros
 
-mkdir -p %{buildroot}{%{_localstatedir}/misc,%{_var}/log/prelink}
-touch %{buildroot}%{_localstatedir}/misc/prelink.full
-touch %{buildroot}%{_localstatedir}/misc/prelink.force
+mkdir -p %{buildroot}{%{_localstatedir}/lib/misc,%{_var}/log/prelink}
+touch %{buildroot}%{_localstatedir}/lib/misc/prelink.full
+touch %{buildroot}%{_localstatedir}/lib/misc/prelink.force
 touch %{buildroot}/%{_var}/log/prelink/prelink.log
 
 cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
@@ -83,8 +83,8 @@ cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
 EOF
 
 %post
-%create_ghostfile %{_localstatedir}/misc/prelink.full root root 644
-%create_ghostfile %{_localstatedir}/misc/prelink.force root root 644
+%create_ghostfile %{_localstatedir}/lib/misc/prelink.full root root 644
+%create_ghostfile %{_localstatedir}/lib/misc/prelink.force root root 644
 %create_ghostfile %{_var}/log/prelink.log root root 600
 
 %clean
@@ -103,8 +103,8 @@ rm -rf %{buildroot}
 %{_mandir}/man8/prelink.8*
 %{_mandir}/man8/execstack.8*
 %dir %{_var}/log/prelink
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/misc/prelink.full
-%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/misc/prelink.force
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.full
+%attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.force
 %attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink/prelink.log
 
 
