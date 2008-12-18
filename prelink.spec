@@ -1,7 +1,7 @@
 %define	name	prelink
 %define	version	0.4.0
 %define	date	20071009
-%define rel 3
+%define rel 4
 %define	release	%mkrel 1.%{date}.%{rel}
 
 Summary:	An ELF prelinking utility
@@ -82,10 +82,19 @@ cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
 }
 EOF
 
+mkdir -p %{buildroot}/%{_sysconfdir}/prelink.conf.d
+touch %{buildroot}/%{_sysconfdir}/prelink.cache
+
 %post
 %create_ghostfile %{_localstatedir}/lib/misc/prelink.full root root 644
 %create_ghostfile %{_localstatedir}/lib/misc/prelink.force root root 644
 %create_ghostfile %{_var}/log/prelink.log root root 600
+
+%preun
+if [ "$1" = "0" ]; then
+ echo undo prelinking, it might take some time
+ %{_sbindir}/prelink -ua 2> /dev/null
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -95,6 +104,8 @@ rm -rf %{buildroot}
 %doc doc/prelink.pdf
 %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/prelink.conf
 %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sysconfig/prelink
+%verify(not md5 size mtime) %{_sysconfdir}/prelink.cache
+%dir %{_sysconfdir}/prelink.conf.d
 %config(noreplace) %{_sys_macros_dir}/%{name}.macros
 %{_sysconfdir}/cron.daily/prelink
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
