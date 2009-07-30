@@ -1,7 +1,7 @@
 %define	name	prelink
-%define	version	0.4.0
-%define	date	20071009
-%define rel 4
+%define	version	0.4.2
+%define	date	20090709
+%define rel 1
 %define	release	%mkrel 1.%{date}.%{rel}
 
 Summary:	An ELF prelinking utility
@@ -39,7 +39,7 @@ cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
 
 %build
-%configure --disable-shared
+%configure2_5x --disable-shared
 %make
 
 %check
