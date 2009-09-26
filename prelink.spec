@@ -1,6 +1,6 @@
 %define	name	prelink
 %define	version	0.4.2
-%define	date	20090709
+%define	date	20090925
 %define rel 1
 %define	release	%mkrel 1.%{date}.%{rel}
 
