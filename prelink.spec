@@ -1,6 +1,6 @@
 %define	name	prelink
-%define	version	0.4.2
-%define	date	20091104
+%define	version	0.4.3
+%define	date	20100106
 %define rel 1
 %define	release	%mkrel 1.%{date}.%{rel}
 
@@ -49,8 +49,8 @@ echo ====================TESTING=========================
 echo ====================TESTING END=====================
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{makeinstall}
+rm -rf %{buildroot}
+%{makeinstall_std}
 mkdir -p %{buildroot}%{_sys_macros_dir}
 cp -a prelink.conf %{buildroot}%{_sysconfdir}
 
@@ -117,6 +117,3 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.full
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.force
 %attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink/prelink.log
-
-
-
