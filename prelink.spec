@@ -1,16 +1,14 @@
-%define	name	prelink
-%define	version	0.4.3
-%define	date	20100106
-%define rel 1
-%define	release	%mkrel 1.%{date}.%{rel}
+%define	date	20101123
 
+Name:		prelink
+Version:	0.4.4
+Release:	%mkrel 1.%{date}.1
 Summary:	An ELF prelinking utility
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
 License:	GPL
 Epoch:		1
 Group:		System/Base
+# actually, ripped from latest srpm from
+# http://mirrors.kernel.org/fedora/development/15/source/SRPMS/prelink-0.4.4-1.fc15.src.rpm
 Source0:	ftp://people.redhat.com/jakub/prelink/%{name}-%{date}.tar.bz2
 Source2:	prelink.conf
 Source3:	prelink.cron
@@ -39,6 +37,7 @@ cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
 
 %build
+sed -i -e '/^prelink_LDADD/s/$/ -lpthread/' src/Makefile.{am,in}
 %configure2_5x --disable-shared
 %make
 
