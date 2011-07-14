@@ -2,7 +2,7 @@
 
 Name:		prelink
 Version:	0.4.5
-Release:	1.%{date}.1
+Release:	1.%{date}.2
 Summary:	An ELF prelinking utility
 License:	GPLv2+
 Epoch:		1
@@ -92,6 +92,15 @@ if [ "$1" = "0" ]; then
  echo undo prelinking, it might take some time
  %{_sbindir}/prelink -ua 2> /dev/null
 fi
+
+# This is a bit sub-optimal and only does libraries for now,
+# once trigger functionality in rpm has been extended so that
+# matching files can be passed by name, we can do it faster
+# and also trigger it on binaries as well.
+%triggerin -- /lib/*.so.*, /lib64/*.so.*, %{_prefix}/lib/*.so.*, %{_prefix}/lib64/*.so.*
+[ -f %{_sysconfdir}/sysconfig/prelink ] && . %{_sysconfdir}/sysconfig/prelink
+echo "`date`, %{_sbindir}/prelink $PRELINK_OPTS --libs-only --all --quick --verbose:" >> %{_var}/log/prelink/prelink.log
+/usr/bin/time %{_sbindir}/prelink $PRELINK_OPTS --libs-only --all --quick --verbose &>> %{_var}/log/prelink/prelink.log
 
 %files
 %doc doc/prelink.pdf
