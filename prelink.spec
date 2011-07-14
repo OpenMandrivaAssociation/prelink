@@ -40,6 +40,29 @@ sed -i -e '/^prelink_LDADD/s/$/ -lpthread/' src/Makefile.{am,in}
 %configure2_5x --disable-shared
 %make
 
+cat > %{name}.macros <<"EOF"
+# rpm-4.1 verifies prelinked libraries using a prelink undo helper.
+#       Note: The 2nd token is used as argv[0] and "library" is a
+#       placeholder that will be deleted and replaced with the appropriate
+#       library file path.
+%%__prelink_undo_cmd     %{_sbindir}/prelink prelink -y library
+EOF
+
+cat > %{name}.logrotate << EOF
+%{_var}/log/prelink/prelink.log {
+    missingok
+    notifempty
+}
+EOF
+
+
+
+
+
+
+
+
+
 %check
 echo ====================TESTING=========================
 %make -C testsuite check-harder
@@ -48,39 +71,19 @@ echo ====================TESTING END=====================
 
 %install
 %{makeinstall_std}
-mkdir -p %{buildroot}%{_sys_macros_dir}
-cp -a prelink.conf %{buildroot}%{_sysconfdir}
-
-mkdir -p %{buildroot}%{_sysconfdir}/{sysconfig,cron.daily,logrotate.d}
-
-cp -a prelink.cron %{buildroot}%{_sysconfdir}/cron.daily/prelink
-cp -a prelink.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/prelink
-chmod 755 %{buildroot}%{_sysconfdir}/cron.daily/prelink
-chmod 644 %{buildroot}%{_sysconfdir}/{sysconfig/prelink,prelink.conf}
-cat > %{buildroot}%{_sys_macros_dir}/%{name}.macros <<"EOF"
-# rpm-4.1 verifies prelinked libraries using a prelink undo helper.
-#       Note: The 2nd token is used as argv[0] and "library" is a
-#       placeholder that will be deleted and replaced with the appropriate
-#       library file path.
-%%__prelink_undo_cmd     %{_sbindir}/prelink prelink -y library
-EOF
-
-chmod 644 %{buildroot}%{_sys_macros_dir}/%{name}.macros
+install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/prelink.conf
+install -m755 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/cron.daily/prelink
+install -m644 %{SOURCE4} -D %{buildroot}%{_sysconfdir}/sysconfig/prelink
+install -m644 %{name}.macros -D %{buildroot}%{_sys_macros_dir}/%{name}.macros
+install -m644 %{name}.logrotate -D %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 mkdir -p %{buildroot}{%{_localstatedir}/lib/misc,%{_var}/log/prelink}
 touch %{buildroot}%{_localstatedir}/lib/misc/prelink.full
 touch %{buildroot}%{_localstatedir}/lib/misc/prelink.force
-touch %{buildroot}/%{_var}/log/prelink/prelink.log
+touch %{buildroot}%{_var}/log/prelink/prelink.log
 
-cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
-/var/log/prelink/prelink.log {
-    missingok
-    notifempty
-}
-EOF
-
-mkdir -p %{buildroot}/%{_sysconfdir}/prelink.conf.d
-touch %{buildroot}/%{_sysconfdir}/prelink.cache
+mkdir -p %{buildroot}%{_sysconfdir}/prelink.conf.d
+touch %{buildroot}%{_sysconfdir}/prelink.cache
 
 %post
 %create_ghostfile %{_localstatedir}/lib/misc/prelink.full root root 644
