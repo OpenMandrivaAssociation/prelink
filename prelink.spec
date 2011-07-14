@@ -2,7 +2,7 @@
 
 Name:		prelink
 Version:	0.4.5
-Release:	1.%{date}.2
+Release:	1.%{date}.3
 Summary:	An ELF prelinking utility
 License:	GPLv2+
 Epoch:		1
@@ -33,7 +33,7 @@ and thus programs come up faster.
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
 %patch2 -p0 -b .skip_debug
-perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
+perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> prelink.conf
 
 %build
 sed -i -e '/^prelink_LDADD/s/$/ -lpthread/' src/Makefile.{am,in}
@@ -54,14 +54,6 @@ cat > %{name}.logrotate << EOF
     notifempty
 }
 EOF
-
-
-
-
-
-
-
-
 
 %check
 echo ====================TESTING=========================
