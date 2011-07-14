@@ -1,8 +1,8 @@
-%define	date	20101123
+%define	date	20110622
 
 Name:		prelink
-Version:	0.4.4
-Release:	%mkrel 1.%{date}.1
+Version:	0.4.5
+Release:	1.%{date}.1
 Summary:	An ELF prelinking utility
 License:	GPL
 Epoch:		1
