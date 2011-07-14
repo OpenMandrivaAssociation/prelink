@@ -57,7 +57,7 @@ cp -a prelink.cron %{buildroot}%{_sysconfdir}/cron.daily/prelink
 cp -a prelink.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/prelink
 chmod 755 %{buildroot}%{_sysconfdir}/cron.daily/prelink
 chmod 644 %{buildroot}%{_sysconfdir}/{sysconfig/prelink,prelink.conf}
-cat > %{buildroot}%{_sys_macros_dir}/%name.macros <<"EOF"
+cat > %{buildroot}%{_sys_macros_dir}/%{name}.macros <<"EOF"
 # rpm-4.1 verifies prelinked libraries using a prelink undo helper.
 #       Note: The 2nd token is used as argv[0] and "library" is a
 #       placeholder that will be deleted and replaced with the appropriate
@@ -65,7 +65,7 @@ cat > %{buildroot}%{_sys_macros_dir}/%name.macros <<"EOF"
 %%__prelink_undo_cmd     %{_sbindir}/prelink prelink -y library
 EOF
 
-chmod 644 %{buildroot}%{_sys_macros_dir}/%name.macros
+chmod 644 %{buildroot}%{_sys_macros_dir}/%{name}.macros
 
 mkdir -p %{buildroot}{%{_localstatedir}/lib/misc,%{_var}/log/prelink}
 touch %{buildroot}%{_localstatedir}/lib/misc/prelink.full
@@ -73,7 +73,7 @@ touch %{buildroot}%{_localstatedir}/lib/misc/prelink.force
 touch %{buildroot}/%{_var}/log/prelink/prelink.log
 
 cat > %buildroot%{_sysconfdir}/logrotate.d/%{name} << EOF
-/var/log/prelink.log {
+/var/log/prelink/prelink.log {
     missingok
     notifempty
 }
@@ -85,7 +85,7 @@ touch %{buildroot}/%{_sysconfdir}/prelink.cache
 %post
 %create_ghostfile %{_localstatedir}/lib/misc/prelink.full root root 644
 %create_ghostfile %{_localstatedir}/lib/misc/prelink.force root root 644
-%create_ghostfile %{_var}/log/prelink.log root root 600
+%create_ghostfile %{_var}/log/prelink/prelink.log root root 600
 
 %preun
 if [ "$1" = "0" ]; then
