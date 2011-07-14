@@ -17,7 +17,6 @@ Patch0:		prelink-0.3.10-init.patch
 Patch1:		cron-use-ionice.diff
 Patch2:		conf-skip-debug-files.patch
 
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	elfutils-static-devel glibc-static-devel perl
 Requires:	coreutils findutils
 Requires:	util-linux gawk grep
@@ -48,7 +47,6 @@ echo ====================TESTING=========================
 echo ====================TESTING END=====================
 
 %install
-rm -rf %{buildroot}
 %{makeinstall_std}
 mkdir -p %{buildroot}%{_sys_macros_dir}
 cp -a prelink.conf %{buildroot}%{_sysconfdir}
@@ -95,11 +93,7 @@ if [ "$1" = "0" ]; then
  %{_sbindir}/prelink -ua 2> /dev/null
 fi
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc doc/prelink.pdf
 %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/prelink.conf
 %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/sysconfig/prelink
