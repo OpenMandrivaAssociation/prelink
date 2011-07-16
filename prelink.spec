@@ -92,7 +92,11 @@ fi
 # once trigger functionality in rpm has been extended so that
 # matching files can be passed by name, we can do it faster
 # and also trigger it on binaries as well.
-%if "%{distepoch}" >= "2012.0"
+# XXX: disabled, too slow, will rather consider re-enabling it
+# per file when triggers has been extended with the necessary
+# functionality
+%if 0
+#"%{distepoch}" >= "2012.0"
 %triggerin -- /lib/*.so.*, /lib64/*.so.*, %{_prefix}/lib/*.so.*, %{_prefix}/lib64/*.so.*
 [ -f %{_sysconfdir}/sysconfig/prelink ] && . %{_sysconfdir}/sysconfig/prelink
 echo "`date`, %{_sbindir}/prelink $PRELINK_OPTS --libs-only --all --quick --verbose:" >> %{_var}/log/prelink/prelink.log
