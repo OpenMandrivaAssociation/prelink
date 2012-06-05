@@ -9,7 +9,7 @@ Epoch:		1
 Group:		System/Base
 # actually, ripped from latest srpm from
 # http://mirrors.kernel.org/fedora/development/15/source/SRPMS/prelink-0.4.4-1.fc15.src.rpm
-Source0:	ftp://people.redhat.com/jakub/prelink/%{name}-%{date}.tar.bz2
+Source0:	http://people.redhat.com/jakub/prelink/%{name}-%{date}.tar.bz2
 Source2:	prelink.conf
 Source3:	prelink.cron
 Source4:	prelink.sysconfig
