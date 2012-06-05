@@ -16,6 +16,8 @@ Source4:	prelink.sysconfig
 Patch0:		prelink-0.3.10-init.patch
 Patch1:		cron-use-ionice.diff
 Patch2:		conf-skip-debug-files.patch
+Patch3:		prelink-arm-fix.patch
+
 
 BuildRequires:	elfutils-static-devel glibc-static-devel perl
 Requires:	coreutils findutils
@@ -29,10 +31,12 @@ and thus programs come up faster.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1 -b .init
+%patch0 -p1 -b .init~
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
-%patch1 -p0 -b .ionice
-%patch2 -p0 -b .skip_debug
+%patch1 -p0 -b .ionice~
+%patch2 -p0 -b .skip_debug~
+%patch3 -p1 -b .arm~
+
 perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> prelink.conf
 echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{py_ver}#*#g' >> prelink.conf
 
@@ -63,7 +67,7 @@ echo ====================TESTING=========================
 echo ====================TESTING END=====================
 
 %install
-%{makeinstall_std}
+%makeinstall_std
 install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/prelink.conf
 install -m755 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/cron.daily/prelink
 install -m644 %{SOURCE4} -D %{buildroot}%{_sysconfdir}/sysconfig/prelink
