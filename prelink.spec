@@ -13,10 +13,9 @@ Source0:	http://people.redhat.com/jakub/prelink/%{name}-%{date}.tar.bz2
 Source2:	prelink.conf
 Source3:	prelink.cron
 Source4:	prelink.sysconfig
-Patch0:		prelink-0.3.10-init.patch
-Patch1:		cron-use-ionice.diff
-Patch2:		conf-skip-debug-files.patch
+Patch0:		prelink-0.4.6-init.patch
 Patch3:		prelink-arm-fix.patch
+Patch4:		prelink-0.4.6-link-against-libpthread.patch
 
 
 BuildRequires:	elfutils-static-devel glibc-static-devel perl
@@ -32,16 +31,11 @@ and thus programs come up faster.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .init~
-cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
-%patch1 -p0 -b .ionice~
-%patch2 -p0 -b .skip_debug~
 %patch3 -p1 -b .arm~
-
-perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> prelink.conf
-echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{py_ver}#*#g' >> prelink.conf
+%patch4 -p1 -b .pthread~
+autoreconf -fi
 
 %build
-sed -i -e '/^prelink_LDADD/s/$/ -lpthread/' src/Makefile.{am,in}
 %configure2_5x --disable-shared
 %make
 
@@ -50,7 +44,7 @@ cat > %{name}.macros <<"EOF"
 #       Note: The 2nd token is used as argv[0] and "library" is a
 #       placeholder that will be deleted and replaced with the appropriate
 #       library file path.
-%%__prelink_undo_cmd     %{_sbindir}/prelink prelink -y library
+ %%__prelink_undo_cmd     %{_sbindir}/prelink prelink -y library
 EOF
 
 cat > %{name}.logrotate << EOF
@@ -69,6 +63,9 @@ echo ====================TESTING END=====================
 %install
 %makeinstall_std
 install -m644 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/prelink.conf
+perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> %{buildroot}%{_sysconfdir}/prelink.conf
+echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{py_ver}#*#g' >> %{buildroot}%{_sysconfdir}/prelink.conf
+
 install -m755 %{SOURCE3} -D %{buildroot}%{_sysconfdir}/cron.daily/prelink
 install -m644 %{SOURCE4} -D %{buildroot}%{_sysconfdir}/sysconfig/prelink
 install -m644 %{name}.macros -D %{buildroot}%{_sys_macros_dir}/%{name}.macros
