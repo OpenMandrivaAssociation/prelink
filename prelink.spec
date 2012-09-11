@@ -1,4 +1,4 @@
-%define	date	20111012
+%define	date	20120628
 
 Name:		prelink
 Version:	0.4.6
