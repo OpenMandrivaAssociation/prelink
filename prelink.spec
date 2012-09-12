@@ -54,11 +54,11 @@ cat > %{name}.logrotate << EOF
 }
 EOF
 
-%check
-echo ====================TESTING=========================
-%make -C testsuite check-harder
-%make -C testsuite check-cycle
-echo ====================TESTING END=====================
+#% check
+#echo ====================TESTING=========================
+#% make -C testsuite check-harder
+#% make -C testsuite check-cycle
+#echo ====================TESTING END=====================
 
 %install
 %makeinstall_std
