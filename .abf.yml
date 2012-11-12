@@ -1,0 +1,5 @@
+sources:
+  "prelink-20120628.tar.bz2:"	cbc25991fffe7c3d8c824ad033369a455aadda90
+  "prelink.conf:"	7d0c5a161827f3c84fd47243b55620fab59f0026
+  "prelink.cron:"	53c58600b8ddba83f5979657b90e506af5e29860
+  "prelink.sysconfig:"	b3dfd9579b5ecc4eb0b42d926c63496a2870b8c5

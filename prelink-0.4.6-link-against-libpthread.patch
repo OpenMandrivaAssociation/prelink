@@ -1,0 +1,11 @@
+--- prelink/src/Makefile.am.pthread~	2009-06-12 15:29:39.000000000 +0200
++++ prelink/src/Makefile.am	2012-06-05 15:21:09.246738676 +0200
+@@ -21,7 +21,7 @@ prelink_SOURCES = cache.c conflict.c cxx
+ 		  verify.c canonicalize.c md5.c md5.h sha.c sha.h 	     \
+ 		  $(common_SOURCES) $(arch_SOURCES)
+ prelink_LDADD = @LIBGELF@
+-prelink_LDFLAGS = -all-static
++prelink_LDFLAGS = -all-static -pthread
+ 
+ execstack_SOURCES = execstack.c $(common_SOURCES) $(arch_SOURCES)
+ 
