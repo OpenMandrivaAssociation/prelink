@@ -1,0 +1,12 @@
+Index: prelink.conf
+===================================================================
+--- prelink.conf	(revision 115673)
++++ prelink.conf	(working copy)
+@@ -19,6 +19,7 @@
+ -b *.js
+ -b /lib/modules
+ -b /usr/lib/locale
++-b /usr/lib{,64}/debug
+ -l /bin
+ -l /usr/bin
+ -l /sbin
