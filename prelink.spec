@@ -16,8 +16,6 @@ Source4:	prelink.sysconfig
 Source5:	prelink.macros
 Source6:	prelink.logrotate
 Patch0:		prelink-0.4.6-init.patch
-Patch1:		cron-use-ionice.diff
-Patch2:		conf-skip-debug-files.patch
 Patch3:		fix-libgelf-linking.patch
 
 BuildRequires:	elfutils-static-devel glibc-static-devel perl
