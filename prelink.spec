@@ -2,7 +2,7 @@
 
 Name:		prelink
 Version:	0.4.6
-Release:	1.%{date}.3
+Release:	1.%{date}.4
 Summary:	An ELF prelinking utility
 License:	GPLv2+
 Epoch:		1
@@ -18,9 +18,14 @@ Source6:	prelink.logrotate
 Patch0:		prelink-0.4.6-init.patch
 Patch3:		fix-libgelf-linking.patch
 
-BuildRequires:	elfutils-static-devel glibc-static-devel perl
-Requires:	coreutils findutils
-Requires:	util-linux gawk grep
+BuildRequires:	elfutils-static-devel
+BuildRequires:	glibc-static-devel
+BuildRequires:	perl
+Requires:	coreutils
+Requires:	findutils
+Requires:	util-linux
+Requires:	gawk
+Requires:	grep
 Requires(post):	rpm-helper
 
 %description
