@@ -53,8 +53,8 @@ sed -i -e '/^prelink_LDADD/s/=/= -pthread/' src/Makefile.{am,in}
 %check
 %define testcc CC='gcc -Wl,--add-needed' CXX='g++ -Wl,--add-needed'
 echo ====================TESTING=========================
-%make -C testsuite check-harder %{testcc}
-%make -C testsuite check-cycle %{testcc}
+make -C testsuite check-harder %{testcc}
+make -C testsuite check-cycle %{testcc}
 echo ====================TESTING END=====================
 
 %install
