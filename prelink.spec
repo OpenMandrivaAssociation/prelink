@@ -2,7 +2,7 @@
 
 Name:		prelink
 Version:	0.4.6
-Release:	1.%{date}.4
+Release:	1.%{date}.5
 Summary:	An ELF prelinking utility
 License:	GPLv2+
 Epoch:		1
@@ -17,6 +17,7 @@ Source5:	prelink.macros
 Source6:	prelink.logrotate
 Patch0:		prelink-0.4.6-init.patch
 Patch3:		fix-libgelf-linking.patch
+Patch4:		prelink-20111012-x86_64-linker.patch
 
 BuildRequires:	elfutils-static-devel
 BuildRequires:	glibc-static-devel
@@ -40,6 +41,7 @@ cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
 %patch2 -p0 -b .skip_debug
 %patch3 -p1 -b .fix_libgelf
+%patch4 -p1 -b .x86_64
 perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> prelink.conf
 echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{py_ver}#*#g' >> prelink.conf
 sed -i -e '/^prelink_LDADD/s/=/= -pthread/' src/Makefile.{am,in}
