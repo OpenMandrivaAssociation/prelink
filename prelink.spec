@@ -1,11 +1,11 @@
 %define	date	20111012
 
+Summary:	An ELF prelinking utility
 Name:		prelink
+Epoch:		1
 Version:	0.4.6
 Release:	1.%{date}.6
-Summary:	An ELF prelinking utility
 License:	GPLv2+
-Epoch:		1
 Group:		System/Base
 # actually, ripped from latest srpm from
 # http://mirrors.kernel.org/fedora/development/15/source/SRPMS/prelink-0.4.4-1.fc15.src.rpm
@@ -22,10 +22,10 @@ BuildRequires:	elfutils-static-devel
 BuildRequires:	glibc-static-devel
 BuildRequires:	perl
 Requires:	coreutils
-Requires:	findutils
-Requires:	util-linux
 Requires:	gawk
 Requires:	grep
+Requires:	findutils
+Requires:	util-linux
 Requires(post):	rpm-helper
 
 %description
@@ -34,7 +34,7 @@ and executables, so that far fewer relocations need to be resolved at runtime
 and thus programs come up faster.
 
 %prep
-%setup -q -n %{name}
+%setup -qn %{name}
 %patch0 -p1 -b .init
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 %patch1 -p0 -b .ionice
@@ -114,127 +114,4 @@ echo "`date`, %{_sbindir}/prelink $PRELINK_OPTS --libs-only --all --quick --verb
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.full
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.force
 %attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink/prelink.log
-
-
-%changelog
-* Sun Jul 17 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.4.5-1.20110622.5
-+ Revision: 690149
-- we might just as well prelink python modules as we do for perl.. :)
-
-* Sat Jul 16 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.4.5-1.20110622.4
-+ Revision: 690110
-- disable file trigger for cooker also for now..
-- don't enable file trigger on 2011
-
-* Fri Jul 15 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.4.5-1.20110622.3
-+ Revision: 690047
-- fix so that perl module path doesn't have perl version hardcoded
-
-* Fri Jul 15 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.4.5-1.20110622.2
-+ Revision: 690046
-- apply some cosmetics
-- fix incorrect path to log ghost file created and for logrotate
-- add a file trigger to run prelink in quick mode for libraries
-
-* Thu Jul 14 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.4.5-1.20110622.1
-+ Revision: 690038
-- haul out some trash
-- update license
-- new version
-
-* Fri Apr 08 2011 Paulo Andrade <pcpa@mandriva.com.br> 1:0.4.4-1.20101123.1
-+ Revision: 651897
-- Update to latest fedora version
-
-* Sat Aug 28 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 1:0.4.3-1.20100106.1mdv2011.0
-+ Revision: 573979
-- update to new version 0.4.3
-
-* Wed Dec 02 2009 Herton Ronaldo Krzesinski <herton@mandriva.com.br> 1:0.4.2-1.20091104.1mdv2010.1
-+ Revision: 472611
-- Updated to 20091104 snapshot.
-
-* Sat Sep 26 2009 Frederik Himpe <fhimpe@mandriva.org> 1:0.4.2-1.20090925.1mdv2010.0
-+ Revision: 449647
-- Update to new version 20090925
-
-* Thu Jul 30 2009 Frederik Himpe <fhimpe@mandriva.org> 1:0.4.2-1.20090709.1mdv2010.0
-+ Revision: 404832
-- Update to new version 0.4.2-20090709 from Fedora
-
-* Thu Dec 18 2008 Frederic Crozat <fcrozat@mandriva.com> 1:0.4.0-1.20071009.4mdv2009.1
-+ Revision: 315630
-- Add preun script to undo prelink when uninstalling package
-- Update configuration to prelink kde3 too
-
-* Mon Jun 02 2008 Pixel <pixel@mandriva.com> 1:0.4.0-1.20071009.3mdv2009.0
-+ Revision: 214231
-- adapt to %%_localstatedir now being /var instead of /var/lib (#22312)
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - remove useless kernel require
-    - kill re-definition of %%buildroot on Pixel's request
-
-  + Olivier Blin <oblin@mandriva.com>
-    - restore BuildRoot
-
-* Thu Dec 06 2007 Thierry Vignaud <tv@mandriva.org> 1:0.4.0-1.20071009.2mdv2008.1
-+ Revision: 115914
-- prelink perl modules in vendor directory too
-- log file has moved
-- enable test suite
-
-* Wed Dec 05 2007 Thierry Vignaud <tv@mandriva.org> 1:0.4.0-1.20071009.1mdv2008.1
-+ Revision: 115690
-- prelink perl too
-- patch 2: skip debug files from *-debug packages
-- patch 1: use ionice
-- alter management of extra sources so that we can patch them while still easily
-  enabling to sync with fedora
-- sync description with fedora
-- new release (from fedora)
-
-* Tue Nov 13 2007 Thierry Vignaud <tv@mandriva.org> 1:0.3.10-1.20061201.2mdv2008.1
-+ Revision: 108452
-- use ionice
-
-
-* Sat Jan 13 2007 Olivier Thauvin <nanardon@mandriva.org> 0.3.10-1.20061201.1mdv2007.0
-+ Revision: 108357
-- From (Frederik Himpe <fhimpe at telenet.be>)
-  * update to 0.3.10 (supports DT_GNU_HASH)
-  * run /sbin/init U after init is prelinked, otherwise umounting of / will fail
-
-* Tue Aug 08 2006 Olivier Thauvin <nanardon@mandriva.org> 1:0.3.6-1.20060213.1mdv2007.0
-+ Revision: 54230
-- fix release tag according software version
-- add sources files...
-- 20060213
-- Import prelink
-
-* Tue Jan 31 2006 Per Øyvind Karlsen <pkarlsen@mandriva.com> 0.3.6-1mdk
-- 0.3.6
-- fix executable-marked-as-config-file
-
-* Sat Jan 14 2006 Olivier Thauvin <nanardon@mandriva.org> 0.3.5-2mdk
-- don't use anymore /etc/rpm/macros.%%name but /etc/rpm/macros.d
-
-* Fri Jul 08 2005 Per Øyvind Karlsen <pkarlsen@mandriva.com> 0.3.5-1mdk
-- 0.3.5
-- fix requires
-- %%mkrel
-
-* Thu Feb 17 2005 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.3.4-1mdk
-- 0.3.4
-
-* Fri Dec 17 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.3.3-1mdk
-- 0.3.3 (sync with fedora)
-
-* Thu Jul 29 2004 Thierry Vignaud <tvignaud@mandrakesoft.com> 0.3.2-2mdk
-- fix update from mdk10.0
-
-* Thu Jun 17 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.3.2-1mdk
-- sync with fedora
-- cosmetics
-- disable tests
 
