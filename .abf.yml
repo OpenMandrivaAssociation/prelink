@@ -1,3 +1,4 @@
----
-sources:
+removed_sources:
   prelink-20111012.tar.bz2: 9e8c7059bca48fd6b6d09b5aab0062f5034026cb
+sources:
+  prelink-20130503.tar.bz2: eff86cb26f0cc174486769527286cc388d5216b0
