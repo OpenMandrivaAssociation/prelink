@@ -1,0 +1,31 @@
+Author: Colin Guthrie <colin@mageia.org>
+
+The prelink binary will call "/sbin/init U" and thus running 'telinit u'
+here is redundant.
+
+It also triggers a bug in systemd where the serialisation is racy, and thus
+two calls to daemon-reexec in rapid succession can cause problems where
+the most obvious user-visable change is the writing of a /run/nologin
+file.
+
+See: https://bugzilla.redhat.com/show_bug.cgi?id=1043212#c26
+
+--- prelink/prelink.cron.orig	2014-01-16 12:05:02.406133467 +0000
++++ prelink/prelink.cron	2014-01-16 12:05:18.526497605 +0000
+@@ -11,8 +11,6 @@
+     /usr/sbin/prelink -uav >> /var/log/prelink/prelink.log 2>&1 \
+       || echo Prelink failed with return value $? >> /var/log/prelink/prelink.log
+     rm -f /etc/prelink.cache
+-    # Restart init if needed
+-    [ -n "$(find `ldd /sbin/init | awk 'NF == 4 { print $3 }'` /sbin/init -ctime -1 2>/dev/null )" ] && /sbin/telinit u
+   fi
+   exit 0
+ fi
+@@ -46,7 +44,5 @@
+ echo /usr/sbin/prelink -av $PRELINK_OPTS > /var/log/prelink/prelink.log
+ /usr/sbin/prelink -av $PRELINK_OPTS >> /var/log/prelink/prelink.log 2>&1 \
+   || echo Prelink failed with return value $? >> /var/log/prelink/prelink.log
+-# Restart init if needed
+-[ -n "$(find `ldd /sbin/init | awk 'NF == 4 { print $3 }'` /sbin/init -ctime -1 2>/dev/null )" ] && /sbin/telinit u
+ 
+ exit 0

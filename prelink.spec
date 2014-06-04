@@ -1,10 +1,10 @@
-%define	date	20111012
+%define	date 20130503
 
 Summary:	An ELF prelinking utility
 Name:		prelink
 Epoch:		1
-Version:	0.4.6
-Release:	1.%{date}.6
+Version:	0.5.0
+Release:	1.%{date}.1
 License:	GPLv2+
 Group:		System/Base
 # actually, ripped from latest srpm from
@@ -15,8 +15,8 @@ Source3:	prelink.cron
 Source4:	prelink.sysconfig
 Source5:	prelink.macros
 Source6:	prelink.logrotate
-Patch0:		prelink-0.4.6-init.patch
-Patch3:		fix-libgelf-linking.patch
+Patch0:		prelink-0.5.0-init.patch
+Patch1:		prelink-do-not-reexec-init-from-cron.patch
 
 BuildRequires:	elfutils-static-devel
 BuildRequires:	glibc-static-devel
@@ -37,15 +37,13 @@ and thus programs come up faster.
 %setup -qn %{name}
 %patch0 -p1 -b .init
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
-%patch1 -p0 -b .ionice
-%patch2 -p0 -b .skip_debug
-%patch3 -p1 -b .fix_libgelf
-perl -MConfig -e '$path = "-l $Config{archlib}\n-l $Config{installvendorarch}\n"; $path =~ s/$Config{version}/*/g; print $path' >> prelink.conf
+%patch1 -p0 -b .reexec
+perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
 echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{py_ver}#*#g' >> prelink.conf
 sed -i -e '/^prelink_LDADD/s/=/= -pthread/' src/Makefile.{am,in}
 
 %build
-%configure2_5x --disable-shared
+%configure --disable-shared
 %make
 
 %check
@@ -114,4 +112,3 @@ echo "`date`, %{_sbindir}/prelink $PRELINK_OPTS --libs-only --all --quick --verb
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.full
 %attr(0644,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_localstatedir}/lib/misc/prelink.force
 %attr(0600,root,root) %verify(not md5 size mtime) %ghost %config(missingok,noreplace) %{_var}/log/prelink/prelink.log
-
