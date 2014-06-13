@@ -41,11 +41,7 @@ echo -e "-l %{py_platsitedir}\\n-l %{py_platlibdir}/lib-dynload\\n"|sed -e 's#%{
 sed -i -e '/^prelink_LDADD/s/=/= -pthread/' src/Makefile.{am,in}
 
 %build
-aclocal
-libtoolize --force
-autoheader
-autoconf 
-%configure2_5x --disable-shared
+%configure --disable-shared
 %make
 
 %check
