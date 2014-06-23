@@ -4,7 +4,7 @@ Summary:	An ELF prelinking utility
 Name:		prelink
 Epoch:		1
 Version:	0.5.0
-Release:	1.%{date}.1
+Release:	1.%{date}.2
 License:	GPLv2+
 Group:		System/Base
 # actually, ripped from latest srpm from
@@ -17,6 +17,7 @@ Source5:	prelink.macros
 Source6:	prelink.logrotate
 Patch0:		prelink-0.5.0-init.patch
 Patch1:		prelink-armhf-dynamic-linker.patch
+Patch2:		fix-libgelf-linking.patch
 
 BuildRequires:	elfutils-static-devel
 BuildRequires:	glibc-static-devel
@@ -41,6 +42,7 @@ and thus programs come up faster.
 %ifarch armv7hl
 %patch1 -p1 -b .armhfp-dynamic-linker~
 %endif
+%patch2 -p1 -b .libgelf~
 
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf
