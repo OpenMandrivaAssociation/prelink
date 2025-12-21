@@ -19,6 +19,11 @@ Patch0:		prelink-0.5.0-init.patch
 Patch1:		prelink-armhf-dynamic-linker.patch
 Patch2:		fix-libgelf-linking.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	elfutils-static-devel
 BuildRequires:	glibc-static-devel
 BuildRequires:	perl
