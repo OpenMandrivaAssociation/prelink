@@ -3,7 +3,7 @@
 Summary:	An ELF prelinking utility
 Name:		prelink
 Epoch:		1
-Version:	0.5.0
+Version:	20130503
 Release:	1.%{date}.2
 License:	GPLv2+
 Group:		System/Base
@@ -15,7 +15,7 @@ Source3:	prelink.cron
 Source4:	prelink.sysconfig
 Source5:	prelink.macros
 Source6:	prelink.logrotate
-Patch0:		prelink-0.5.0-init.patch
+Patch0:		prelink-20130503-init.patch
 Patch1:		prelink-armhf-dynamic-linker.patch
 Patch2:		fix-libgelf-linking.patch
 
@@ -40,14 +40,14 @@ and executables, so that far fewer relocations need to be resolved at runtime
 and thus programs come up faster.
 
 %prep
-%setup -qn %{name}
-%patch0 -p1 -b .init~
+%setup -q -n prelink
+%patch -P0 -p1 -b .init~
 # We have two possible dynamic linkers on ARM (soft/hard float ABI). For now,
 # specifically patch the name of the linker on hard float systems. FIXME.
 %ifarch armv7hl
-%patch1 -p1 -b .armhfp-dynamic-linker~
+%patch -P1 -p1 -b .armhfp-dynamic-linker~
 %endif
-%patch2 -p1 -b .libgelf~
+%patch -P2 -p1 -b .libgelf~
 
 cp -a %{SOURCE2} %{SOURCE3} %{SOURCE4} .
 perl -MConfig -e 'print "-l $Config{archlib}\n-l $Config{installvendorarch}\n"' >> prelink.conf

@@ -1,6 +1,7 @@
-diff -urNp prelink_orig/src/arch-arm.c prelink/src/arch-arm.c
---- prelink_orig/src/arch-arm.c	2011-08-26 03:20:49.000000000 -0400
-+++ prelink/src/arch-arm.c	2012-11-28 23:59:28.030164736 -0500
+diff --git a/src/arch-arm.c b/src/arch-arm.c
+index 30a8259..e7a490f 100644
+--- a/src/arch-arm.c
++++ b/src/arch-arm.c
 @@ -832,7 +832,7 @@ PL_ARCH = {
    .R_COPY = R_ARM_COPY,
    .R_RELATIVE = R_ARM_RELATIVE,
